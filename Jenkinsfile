@@ -46,8 +46,6 @@ pipeline {
                 CANARY_REPLICAS = 1
             }
             steps {
-                input 'Deploy canary testing?'
-                milestone(1)
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',
                     configs: 'train-schedule-canary.yml',
@@ -63,8 +61,6 @@ pipeline {
                 CANARY_REPLICAS = 0
             }
             steps {
-                input 'delete canary testing?'
-                milestone(1)
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',
                     configs: 'train-schedule-canary.yml',
