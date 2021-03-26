@@ -38,9 +38,38 @@ pipeline {
                 }
             }
         }
+        stage('deploy the canary') {
+            when {
+                branch 'master'
+            }
+            environment {
+                CANARY_REPLICAS: 1
+            }
+            steps {
+                input 'Deploy canary testing?'
+                milestone(1)
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'train-schedule-canary.yml',
+                    enableConfigSubstitution: true
+                )
+            }
+        }
         stage('DeployToProduction') {
             when {
                 branch 'master'
+            }
+            environment {
+                CANARY_REPLICAS: 0
+            }
+            steps {
+                input 'delete canary testing?'
+                milestone(1)
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'train-schedule-canary.yml',
+                    enableConfigSubstitution: true
+                )
             }
             steps {
                 input 'Deploy to Production?'
