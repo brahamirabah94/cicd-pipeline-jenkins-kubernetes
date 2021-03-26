@@ -43,7 +43,7 @@ pipeline {
                 branch 'master'
             }
             environment {
-                CANARY_REPLICAS: 1
+                CANARY_REPLICAS = 1
             }
             steps {
                 input 'Deploy canary testing?'
@@ -60,7 +60,7 @@ pipeline {
                 branch 'master'
             }
             environment {
-                CANARY_REPLICAS: 0
+                CANARY_REPLICAS = 0
             }
             steps {
                 input 'delete canary testing?'
